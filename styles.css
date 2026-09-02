@@ -1,0 +1,608 @@
+/* Styles for mod_doors. */
+
+.mod-doors-view .doors-wrapper,
+.doors-wrapper {
+    /* A max width set on the activity is applied inline; centre it when it is. */
+    margin-left: auto;
+    margin-right: auto;
+    --doors-door-bg: #1f5c8b;
+    --doors-door-open-bg: #2e7d4f;
+    --doors-door-fg: #fff;
+    --doors-gap: 10px;
+    --doors-cols: 6;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Progress. */
+.doors-progress {
+    margin-bottom: 0.75rem;
+}
+
+.doors-progress-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.doors-progress-bar {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 999px;
+    height: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.doors-progress-fill {
+    background: var(--doors-door-open-bg);
+    height: 100%;
+    transition: width 0.4s ease;
+}
+
+/* Canvas. */
+.doors-canvas {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 6px;
+    padding: var(--doors-gap);
+    position: relative;
+}
+
+.doors-layout-grid .doors-canvas {
+    display: grid;
+    gap: var(--doors-gap);
+    grid-template-columns: repeat(var(--doors-cols), minmax(0, 1fr));
+}
+
+.doors-layout-free .doors-canvas {
+    aspect-ratio: 16 / 9;
+    min-height: 320px;
+    padding: 0;
+}
+
+/* Doors. */
+.doors-door {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    perspective: 900px;
+    position: relative;
+    width: 100%;
+}
+
+.doors-layout-grid.doors-aspect-square .doors-door {
+    aspect-ratio: 1 / 1;
+}
+
+.doors-layout-grid.doors-aspect-portrait .doors-door {
+    aspect-ratio: 3 / 4;
+}
+
+.doors-layout-grid.doors-aspect-landscape .doors-door {
+    aspect-ratio: 4 / 3;
+}
+
+.doors-layout-free .doors-door {
+    aspect-ratio: 1 / 1;
+    position: absolute;
+}
+
+.doors-door-inner {
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0.1, 0.2, 1);
+    width: 100%;
+}
+
+.doors-door.is-open .doors-door-inner {
+    transform: rotateY(180deg);
+}
+
+.doors-nomark .doors-door.is-open .doors-door-inner {
+    transform: none;
+}
+
+.doors-door-face {
+    align-items: center;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background: var(--doors-door-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    color: var(--doors-door-fg);
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    /* Several browsers ignore backface-visibility once a face has positioned
+       children, which leaves the hidden face showing through mirrored. The
+       faces are therefore also switched outright halfway through the flip. */
+    transition: opacity 0s linear 0.3s;
+    width: 100%;
+}
+
+.doors-door-front {
+    background: var(--doors-door-front-bg, var(--doors-door-bg));
+    color: var(--doors-door-front-fg, var(--doors-door-fg));
+    opacity: 1;
+}
+
+.doors-door.is-open .doors-door-front {
+    opacity: 0;
+}
+
+.doors-door-back {
+    background: var(--doors-door-open-bg);
+    opacity: 0;
+    transform: rotateY(180deg);
+}
+
+.doors-door.is-open .doors-door-back {
+    opacity: 1;
+}
+
+/* No flip: the front stays put, so the back must stay hidden. */
+.doors-nomark .doors-door.is-open .doors-door-front {
+    background: var(--doors-door-front-bg, var(--doors-door-bg));
+    color: var(--doors-door-front-fg, var(--doors-door-fg));
+    opacity: 1;
+}
+
+.doors-nomark .doors-door.is-open .doors-door-back {
+    opacity: 0;
+}
+
+.doors-shape-rounded .doors-door-face {
+    border-radius: 10px;
+}
+
+.doors-shape-circle .doors-door-face {
+    border-radius: 50%;
+}
+
+/* Artwork reused on the opened face is dimmed so the door still reads as open. */
+.doors-door-bgimg.doors-dimmed {
+    filter: brightness(0.5) saturate(0.55);
+}
+
+.doors-door-tick {
+    display: none;
+    /* stylelint-disable-next-line csstree/validator */
+    font-size: clamp(0.9rem, 2.4vw, 1.4rem);
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.doors-door-tick::before {
+    content: "\2713";
+}
+
+/* Dim in place: no flip, the door keeps its own face and is dimmed. */
+.doors-opened-dim .doors-door.is-open .doors-door-inner {
+    transform: none;
+}
+
+.doors-opened-dim .doors-door.is-open .doors-door-front {
+    filter: brightness(0.55) saturate(0.6);
+    opacity: 1;
+}
+
+.doors-opened-dim .doors-door.is-open .doors-door-back {
+    opacity: 0;
+}
+
+.doors-opened-dim .doors-door.is-open .doors-door-tick {
+    display: block;
+}
+
+.doors-door-bgimg,
+.doors-door-caption {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.doors-door-bgimg {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.doors-door-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-width: 92%;
+    padding: 4px;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Over artwork, the caption gets a shaded plate so it stays readable. */
+.doors-door-caption.doors-plate {
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 8px;
+    color: #fff;
+    padding: 4px 10px;
+}
+
+.doors-door-number {
+    /* stylelint-disable-next-line csstree/validator */
+    font-size: clamp(1.1rem, 3.2vw, 2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    /* A numeral carries a shadow well. A word does not, so see below. */
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.doors-door-number.doors-door-label {
+    /* stylelint-disable-next-line csstree/validator */
+    font-size: clamp(0.85rem, 2vw, 1.25rem);
+    hyphens: auto;
+    overflow-wrap: anywhere;
+    text-shadow: none;
+}
+
+.doors-door-caption.doors-plate .doors-door-number {
+    text-shadow: none;
+}
+
+.doors-door-title {
+    font-size: 0.75rem;
+    line-height: 1.15;
+    word-break: break-word;
+}
+
+.doors-door:hover .doors-door-face,
+.doors-door:focus-visible .doors-door-face {
+    filter: brightness(1.12);
+}
+
+.doors-door:focus-visible {
+    outline: 3px solid #0f6cbf;
+    outline-offset: 3px;
+}
+
+.doors-door.is-locked {
+    cursor: not-allowed;
+}
+
+.doors-door.is-locked .doors-door-front {
+    filter: grayscale(0.7) brightness(0.75);
+}
+
+.doors-door-lock {
+    bottom: 4px;
+    position: absolute;
+    right: 6px;
+    z-index: 2;
+}
+
+.doors-door.is-loading .doors-door-face {
+    opacity: 0.6;
+}
+
+.doors-shake {
+    animation: doors-shake 0.5s;
+}
+
+@keyframes doors-shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .doors-door-inner {
+        transition: none;
+    }
+
+    .doors-door-face {
+        transition: none;
+    }
+
+    .doors-shake {
+        animation: none;
+    }
+}
+
+/* Transient message. */
+.doors-flash {
+    background: #333;
+    border-radius: 4px;
+    color: #fff;
+    display: inline-block;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    opacity: 0;
+    padding: 6px 12px;
+    transition: opacity 0.3s ease;
+}
+
+.doors-flash.is-visible {
+    opacity: 1;
+}
+
+/* Editing mode. */
+.doors-editing .doors-canvas {
+    border: 2px dashed rgba(0, 0, 0, 0.3);
+    touch-action: none;
+}
+
+.doors-editing .doors-door {
+    cursor: move;
+}
+
+.doors-editing .doors-door.is-selected .doors-door-face {
+    box-shadow: 0 0 0 3px #0f6cbf, 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.doors-editing .doors-door.is-dragging .doors-door-face {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+    opacity: 0.85;
+}
+
+/* Modal. */
+.doors-modal-backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    inset: 0;
+    justify-content: center;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem;
+    position: fixed;
+    /* iOS measures vh against the viewport without the browser chrome, which
+       pushes the top and bottom of a tall panel off screen, so use dvh where
+       it is supported. */
+    height: 100%;
+    /* stylelint-disable-next-line declaration-block-no-duplicate-properties */
+    height: 100dvh;
+    -webkit-overflow-scrolling: touch;
+    z-index: 1055;
+}
+
+.doors-modal-backdrop[hidden] {
+    display: none;
+}
+
+body.doors-modal-open {
+    overflow: hidden;
+}
+
+.doors-modal {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    /* Centres when it fits, scrolls with the backdrop when it does not. */
+    margin: auto;
+    max-height: 90vh;
+    /* stylelint-disable-next-line declaration-block-no-duplicate-properties */
+    max-height: 90dvh;
+    max-width: 830px;
+    width: 100%;
+}
+
+.doors-modal-header {
+    align-items: flex-start;
+    background: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    /* Keeps the close button reachable however long the content is. */
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.doors-modal-title {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.doors-modal-close {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-size: 1.6rem;
+    line-height: 1;
+    padding: 0 0.25rem;
+}
+
+.doors-modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem;
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+.doors-media {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.doors-media-image {
+    border-radius: 4px;
+    max-height: 60vh;
+    max-width: 100%;
+}
+
+.doors-embed {
+    margin-top: 1rem;
+}
+
+.doors-iframe {
+    border: 0;
+    height: 60vh;
+    width: 100%;
+}
+
+.doors-activitywrap {
+    margin-top: 1rem;
+}
+
+.doors-activity-link {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.doors-activity-icon {
+    height: 24px;
+    width: 24px;
+}
+
+/* Activity icons are dark by design and sit on a dark button here, so flatten
+   them to white. Override in custom CSS if you restyle the button lighter. */
+.doors-activity-link .doors-activity-icon {
+    filter: brightness(0) invert(1);
+}
+
+/* A light button needs a dark icon instead. */
+.doors-btn-light .doors-activity-icon {
+    filter: brightness(0);
+}
+
+/* Buttons taking the calendar's own colour rather than the site's. */
+.doors-btn {
+    background-color: var(--doors-btn-bg);
+    border: 1px solid var(--doors-btn-bg);
+    color: var(--doors-btn-fg, #fff);
+}
+
+.doors-btn:hover,
+.doors-btn:focus {
+    background-color: var(--doors-btn-bg);
+    color: var(--doors-btn-fg, #fff);
+    filter: brightness(1.12);
+}
+
+.doors-activity-course {
+    font-size: 0.85rem;
+    opacity: 0.85;
+}
+
+.doors-iframe-note {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: right;
+}
+
+.doors-linkwrap {
+    margin-top: 1rem;
+}
+
+@media (max-width: 576px) {
+    .doors-layout-grid .doors-canvas {
+        grid-template-columns: repeat(min(var(--doors-cols), 4), minmax(0, 1fr));
+    }
+}
+
+/* Report. */
+.doors-report-table td,
+.doors-report-table th {
+    vertical-align: middle;
+}
+
+.doors-report-filter {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Selector reference under the custom CSS box on the settings form. */
+.doors-cssref {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+}
+
+.doors-cssref > summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.doors-cssref[open] > summary {
+    margin-bottom: 0.5rem;
+}
+
+.doors-cssref-intro,
+.doors-cssref-note {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.85;
+}
+
+.doors-cssref-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 0.75rem 0 0.25rem;
+}
+
+.doors-cssref-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.doors-cssref-list li {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1px 0;
+}
+
+.doors-cssref-item {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 1px 6px;
+    white-space: nowrap;
+}
+
+.doors-cssref-item:hover,
+.doors-cssref-item:focus-visible {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.doors-cssref-desc {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
