@@ -11,7 +11,7 @@ calendars... as well as advent.
 * Doors can be 'locked' until a certain date
 * Very customisable in terms of layout and appearance
 
-Current release: 1.0.0-alpha.1. See CHANGELOG.md for history.
+Current release: 1.0.0-alpha.2. See CHANGELOG.md for history.
 
 ## Requirements
 
@@ -59,9 +59,18 @@ Per activity:
   own display on the course page
 * Maximum width. The calendar pages are full width, like the forum, since a grid
   benefits from the room. Set a width here to rein it in, which matters most for
-  a free layout whose background image was made for a particular size
+  a free layout whose background image was made for a particular size. The
+  description above the calendar is narrowed to match
 * Door corners: square, rounded or circle
-* Background image, default closed door image, default opened door image
+* Whether a last row that does not fill the width is centred
+* Door face layout: text over the image, or the whole image with the text
+  underneath, which suits icons and line art
+* Transparent doors, drawn as dashed outlines with the background showing
+  through, plus the gap between doors and whether the background fills the
+  calendar or the doors are fitted to the image. Set together, these give the
+  traditional advent calendar look where each door is a piece of one picture
+* Background image and how strongly it is drawn, default closed door image,
+  default opened door image
 * Background, door, opened door and door text colours
 * Door colours: one colour for every door, or varied from a palette. The colour
   a door gets is derived from its number so it is stable between page loads, and

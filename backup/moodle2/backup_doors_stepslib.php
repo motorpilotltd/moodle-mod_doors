@@ -39,7 +39,9 @@ class backup_doors_activity_structure_step extends backup_activity_structure_ste
         $userinfo = $this->get_setting_value('userinfo');
 
         $doors = new backup_nested_element('doors', ['id'], [
-            'name', 'intro', 'introformat', 'printintro', 'numdoors', 'layout', 'gridcols', 'maxwidth', 'doorshape',
+            'name', 'intro', 'introformat', 'printintro', 'numdoors', 'layout', 'gridcols',
+            'maxwidth', 'doorshape', 'transparentdoors', 'doorgap', 'backgroundfit', 'bgopacity',
+            'facelayout', 'centredoors',
             'aspect', 'bgcolour', 'doorcolour', 'doortextcolour', 'openedcolour', 'colourmode',
             'palette', 'shownumbers',
             'showtitles', 'showactivityicon', 'buttonstyle', 'randomise', 'openmode', 'reopen',

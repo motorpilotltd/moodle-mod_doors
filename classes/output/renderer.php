@@ -55,10 +55,18 @@ class renderer extends plugin_renderer_base {
         if ($bgcolour) {
             $canvasstyle[] = 'background-color:' . $bgcolour;
         }
-        if ($backgroundurl) {
-            $canvasstyle[] = 'background-image:url(' . $backgroundurl->out(false) . ')';
-        }
         $canvasstyle[] = '--doors-cols:' . max(1, (int)$doors->gridcols);
+        $canvasstyle[] = '--doors-gap:' . max(0, (int)($doors->doorgap ?? 10)) . 'px';
+
+        // Fitting the doors to the picture needs the picture's proportions.
+        $fitting = false;
+        if (($doors->backgroundfit ?? 'cover') === 'fit') {
+            $size = doors_get_background_size($context);
+            if ($size) {
+                $canvasstyle[] = '--doors-bg-ratio:' . $size[0] . '/' . $size[1];
+                $fitting = true;
+            }
+        }
         if ($doorcolour) {
             $canvasstyle[] = '--doors-door-bg:' . $doorcolour;
         }
@@ -78,6 +86,18 @@ class renderer extends plugin_renderer_base {
             'doors-aspect-' . $doors->aspect,
             'doors-opened-' . $openedstyle,
         ];
+        if (!empty($doors->transparentdoors)) {
+            $classes[] = 'doors-transparent';
+        }
+        $classes[] = 'doors-face-' . (!empty($doors->facelayout) ? $doors->facelayout : 'overlay');
+        if (!empty($doors->centredoors) && !$fitting) {
+            // Fitting the doors to a picture means tiling it exactly, which
+            // leaves nothing to centre.
+            $classes[] = 'doors-centre';
+        }
+        if ($fitting) {
+            $classes[] = 'doors-fit';
+        }
         if ($editing) {
             $classes[] = 'doors-editing';
         }
@@ -104,6 +124,19 @@ class renderer extends plugin_renderer_base {
         }
 
         $out .= html_writer::start_div('doors-canvas', ['style' => implode(';', $canvasstyle)]);
+
+        // The picture is its own layer rather than the canvas background, so it
+        // can be faded or filtered without taking the doors with it.
+        if ($backgroundurl) {
+            $bgstyle = 'background-image:url(' . $backgroundurl->out(false) . ')';
+            $opacity = isset($doors->bgopacity) ? (int)$doors->bgopacity : 100;
+            if ($opacity >= 0 && $opacity < 100) {
+                // A custom property rather than opacity itself, so custom CSS
+                // can still override it without needing !important.
+                $bgstyle .= ';--doors-bg-opacity:' . round($opacity / 100, 2);
+            }
+            $out .= html_writer::div('', 'doors-bg', ['style' => $bgstyle, 'aria-hidden' => 'true']);
+        }
 
         $colourmap = doors_build_colour_map($doors, $doorrecords);
 
@@ -207,9 +240,10 @@ class renderer extends plugin_renderer_base {
 
         // Over an image, the caption sits on a shaded plate so it stays legible
         // whatever the artwork is doing underneath.
+        $stacked = (($doors->facelayout ?? 'overlay') === 'stacked');
         $frontcaption = $doors->shownumbers || ($doors->showtitles && !empty($door->title));
         $front .= html_writer::start_div(
-            'doors-door-caption' . ($frontimage && $frontcaption ? ' doors-plate' : '')
+            'doors-door-caption' . ($frontimage && $frontcaption && !$stacked ? ' doors-plate' : '')
         );
         if ($doors->shownumbers) {
             $front .= html_writer::span($label, $numberclass);
@@ -243,7 +277,7 @@ class renderer extends plugin_renderer_base {
                 'aria-hidden' => 'true',
             ]);
         }
-        $back .= html_writer::start_div('doors-door-caption' . ($backimage ? ' doors-plate' : ''));
+        $back .= html_writer::start_div('doors-door-caption' . ($backimage && !$stacked ? ' doors-plate' : ''));
         $back .= html_writer::span($label, $numberclass);
         if (!empty($door->title)) {
             $back .= html_writer::span(format_string($door->title), 'doors-door-title');

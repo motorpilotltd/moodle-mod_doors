@@ -40,12 +40,28 @@
 
 /* Canvas. */
 .doors-canvas {
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
     border-radius: 6px;
     padding: var(--doors-gap);
     position: relative;
+}
+
+/* The background picture, on its own layer under the doors. Fade, blur or
+   desaturate this and the doors are untouched, which is not true of the
+   canvas itself: opacity and filter apply to an element's children too. */
+.doors-bg {
+    opacity: var(--doors-bg-opacity, 1);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: inherit;
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 0;
+}
+
+.doors-canvas > .doors-door {
+    z-index: 1;
 }
 
 .doors-layout-grid .doors-canvas {
@@ -58,6 +74,101 @@
     aspect-ratio: 16 / 9;
     min-height: 320px;
     padding: 0;
+}
+
+/* Fit the doors to the background picture, advent calendar style: the canvas
+   takes the picture's proportions and the doors stretch to tile it. */
+.doors-fit .doors-canvas {
+    aspect-ratio: var(--doors-bg-ratio);
+    padding: 0;
+}
+
+.doors-fit.doors-layout-grid .doors-canvas {
+    /* The doors keep the picture's proportions, and the padding sits outside
+       them, so the edges get the same breathing room as the gaps. */
+    box-sizing: content-box;
+    grid-auto-rows: 1fr;
+    padding: var(--doors-gap);
+}
+
+.doors-fit.doors-layout-grid .doors-door {
+    aspect-ratio: auto;
+    height: 100%;
+}
+
+/* Centre a part filled last row. Grid always packs from the left, so the doors
+   are laid out with flex instead and sized to match the column count. */
+.doors-centre.doors-layout-grid .doors-canvas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.doors-centre.doors-layout-grid .doors-door {
+    flex: 0 0 auto;
+    width: calc((100% - (var(--doors-cols) - 1) * var(--doors-gap)) / var(--doors-cols));
+}
+
+/* Text under the picture rather than over it, card fashion. */
+.doors-face-stacked .doors-door-face {
+    flex-direction: column;
+    gap: 6px;
+    justify-content: center;
+    padding: 8px;
+}
+
+.doors-face-stacked .doors-door-bgimg {
+    flex: 0 1 auto;
+    height: auto;
+    max-height: 60%;
+    min-height: 0;
+    object-fit: contain;
+    position: static;
+    width: auto;
+    max-width: 100%;
+}
+
+.doors-face-stacked .doors-door-caption {
+    flex: 0 0 auto;
+    max-width: 100%;
+    padding: 0;
+}
+
+.doors-face-stacked .doors-door-number {
+    /* stylelint-disable-next-line csstree/validator */
+    font-size: clamp(0.95rem, 2.4vw, 1.4rem);
+    text-shadow: none;
+}
+
+.doors-face-stacked .doors-door-title {
+    font-size: 0.8rem;
+}
+
+/* Transparent doors, so the picture shows through until a door is opened. */
+.doors-transparent .doors-door-face,
+.doors-transparent .doors-door-front {
+    background: transparent;
+    border: 2px dashed rgba(255, 255, 255, 0.8);
+    box-shadow: none;
+    /* Ignore any per door text colour: it was worked out for a background
+       that is no longer being drawn. */
+    color: var(--doors-door-fg);
+}
+
+.doors-transparent .doors-door-back {
+    background: rgba(0, 0, 0, 0.45);
+    border-style: solid;
+}
+
+.doors-transparent .doors-door-number,
+.doors-transparent .doors-door-title {
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+}
+
+.doors-transparent .doors-door:hover .doors-door-face,
+.doors-transparent .doors-door:focus-visible .doors-door-face {
+    background: rgba(255, 255, 255, 0.18);
+    filter: none;
 }
 
 /* Doors. */
@@ -475,6 +586,7 @@ body.doors-modal-open {
     display: inline-flex;
     gap: 0.5rem;
     text-align: left;
+    white-space: normal;
 }
 
 .doors-activity-icon {
@@ -505,6 +617,16 @@ body.doors-modal-open {
     background-color: var(--doors-btn-bg);
     color: var(--doors-btn-fg, #fff);
     filter: brightness(1.12);
+}
+
+/* The name and the course sit on separate lines, so a long activity name in
+   another course does not run into it. */
+.doors-activity-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.25;
+    text-align: left;
 }
 
 .doors-activity-course {

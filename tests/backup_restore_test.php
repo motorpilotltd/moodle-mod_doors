@@ -50,6 +50,9 @@ final class backup_restore_test extends \advanced_testcase {
             'course' => $course->id,
             'numdoors' => 3,
             'openmode' => 'sequential',
+            'transparentdoors' => 1,
+            'doorgap' => 0,
+            'backgroundfit' => 'fit',
         ]);
 
         $door = $DB->get_record('doors_door', ['doorsid' => $instance->id, 'doornumber' => 2]);
@@ -72,6 +75,12 @@ final class backup_restore_test extends \advanced_testcase {
         }
 
         $this->assertSame('sequential', $DB->get_field('doors', 'openmode', ['id' => $newcm->instance]));
+
+        // The appearance round's fields come across with the duplicate.
+        $copy = $DB->get_record('doors', ['id' => $newcm->instance]);
+        $this->assertEquals(1, $copy->transparentdoors);
+        $this->assertEquals(0, $copy->doorgap);
+        $this->assertSame('fit', $copy->backgroundfit);
 
         $newdoors = array_values($DB->get_records('doors_door', ['doorsid' => $newcm->instance], 'doornumber ASC'));
         $this->assertCount(3, $newdoors);
