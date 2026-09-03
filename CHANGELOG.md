@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0-alpha.2] - 2026-09-03
 
 ### Added
 
@@ -60,4 +60,5 @@ iterations (1.0.0 to 1.3.0, August 2026) and a standards review.
 - Compatibility floors set to Moodle 4.5 / PHP 8.1; the development-time
   upgrade steps are folded into the installation schema for this baseline.
 
+[1.0.0-alpha.2]: https://github.com/motorpilotltd/moodle-mod_doors/releases/tag/v1.0.0-alpha.2
 [1.0.0-alpha.1]: https://github.com/motorpilotltd/moodle-mod_doors/releases/tag/v1.0.0-alpha.1
