@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_doors';
-$plugin->version   = 2026090200;
+$plugin->version   = 2026090300;
 $plugin->requires  = 2024100700; // Moodle 4.5.
 $plugin->supported = [405, 502]; // Moodle 4.5 to 5.2.
 $plugin->maturity  = MATURITY_ALPHA;
-$plugin->release   = '1.0.0-alpha.1';
+$plugin->release   = '1.0.0-alpha.2';

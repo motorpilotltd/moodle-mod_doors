@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/doors/db" VERSION="20260905" COMMENT="XMLDB file for Moodle mod_doors"
+<XMLDB PATH="mod/doors/db" VERSION="20260903" COMMENT="XMLDB file for Moodle mod_doors"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -17,6 +17,12 @@
         <FIELD NAME="gridcols" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="6" SEQUENCE="false"/>
         <FIELD NAME="maxwidth" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="doorshape" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="rounded" SEQUENCE="false"/>
+        <FIELD NAME="transparentdoors" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="doorgap" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="10" SEQUENCE="false"/>
+        <FIELD NAME="backgroundfit" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="cover" SEQUENCE="false"/>
+        <FIELD NAME="bgopacity" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="100" SEQUENCE="false"/>
+        <FIELD NAME="facelayout" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="overlay" SEQUENCE="false"/>
+        <FIELD NAME="centredoors" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="aspect" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="square" SEQUENCE="false"/>
         <FIELD NAME="bgcolour" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="doorcolour" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>

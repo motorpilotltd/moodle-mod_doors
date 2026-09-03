@@ -172,6 +172,28 @@ function doors_get_image_url($context, $filearea, $itemid = 0) {
 }
 
 /**
+ * The pixel dimensions of the background image, if there is one.
+ *
+ * @param context $context Module context.
+ * @return array|null [width, height], or null when there is no usable image.
+ */
+function doors_get_background_size($context) {
+    $fs = get_file_storage();
+    $files = $fs->get_area_files($context->id, 'mod_doors', 'background', 0, 'filename', false);
+    if (!$files) {
+        return null;
+    }
+
+    $file = reset($files);
+    $info = $file->get_imageinfo();
+    if (empty($info['width']) || empty($info['height'])) {
+        return null;
+    }
+
+    return [(int)$info['width'], (int)$info['height']];
+}
+
+/**
  * Build the HTML shown inside a door once it has been opened.
  *
  * @param stdClass $door The door record.
@@ -266,15 +288,17 @@ function doors_render_door_content($door, $doors, $cm, $context) {
                     'aria-hidden' => 'true',
                 ]);
             }
-            $label .= html_writer::span(format_string($targetcm->get_formatted_name()), 'doors-activity-name');
+            $text = html_writer::span(format_string($targetcm->get_formatted_name()), 'doors-activity-name');
 
             if ($targetcm->course != $cm->course) {
                 $coursename = format_string(get_course($targetcm->course)->fullname);
-                $label .= html_writer::span(
+                $text .= html_writer::span(
                     get_string('dooractivityincourse', 'mod_doors', $coursename),
                     'doors-activity-course'
                 );
             }
+
+            $label .= html_writer::div($text, 'doors-activity-text');
 
             $out .= html_writer::div(
                 html_writer::link($targetcm->url, $label, [
@@ -685,6 +709,12 @@ function doors_build_colour_map($doors, array $doorrecords) {
         return $map;
     }
 
+    if (!empty($doors->transparentdoors)) {
+        // Nothing is painted behind the text, so a per door colour would only
+        // scramble the contrast calculation that goes with it.
+        return $map;
+    }
+
     $palette = doors_get_palette($doors);
     $count = count($palette);
     $previous = null;
@@ -763,6 +793,7 @@ function doors_css_reference() {
             'declaration' => true,
             'items' => [
                 'doorbg' => '--doors-door-bg',
+                'bgopacity' => '--doors-bg-opacity',
                 'doorfg' => '--doors-door-fg',
                 'dooropenbg' => '--doors-door-open-bg',
                 'frontbg' => '--doors-door-front-bg',
@@ -778,7 +809,11 @@ function doors_css_reference() {
             'items' => [
                 'wrapper' => '.doors-wrapper',
                 'canvas' => '.doors-canvas',
+                'bg' => '.doors-bg',
                 'layoutfree' => '.doors-layout-free',
+                'transparent' => '.doors-transparent',
+                'facestacked' => '.doors-face-stacked',
+                'centre' => '.doors-centre',
                 'openeddim' => '.doors-opened-dim',
                 'progress' => '.doors-progress',
                 'progressbar' => '.doors-progress-bar',
@@ -819,6 +854,7 @@ function doors_css_reference() {
                 'richtext' => '.doors-content',
                 'activitylink' => '.doors-activity-link',
                 'activityicon' => '.doors-activity-icon',
+                'activitytext' => '.doors-activity-text',
                 'btn' => '.doors-btn',
                 'link' => '.doors-link',
                 'embed' => '.doors-embed',

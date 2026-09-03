@@ -96,6 +96,21 @@ require([], function() {
 
 echo $OUTPUT->header();
 
+// A maximum width on the calendar looks odd next to a full width description,
+// so bring the activity header in to match.
+if (!empty($doors->maxwidth)) {
+    $width = (int)$doors->maxwidth;
+    // The theme sets its own margins on the header, so these have to insist.
+    echo html_writer::tag(
+        'style',
+        "body.mod-doors-view .activity-header {" .
+        " max-width: {$width}px;" .
+        " margin-left: auto !important;" .
+        " margin-right: auto !important; }",
+        ['data-doors-width' => $cm->id]
+    );
+}
+
 if (!empty($doors->customcss)) {
     // Scope author supplied CSS to this activity only.
     $scoped = preg_replace('/[<>]/', '', $doors->customcss);

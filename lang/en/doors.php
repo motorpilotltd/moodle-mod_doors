@@ -34,8 +34,19 @@ $string['availablefrom'] = 'Available from';
 $string['availablefrom_help'] = 'The door stays locked until this date and time. Leave disabled to make it available immediately.';
 $string['background'] = 'Calendar background image';
 $string['background_help'] = 'An image drawn behind the whole calendar. In the free layout this is the scene the doors sit on.';
+$string['backgroundfit'] = 'Background image';
+$string['backgroundfit:cover'] = 'Fill the calendar, cropping if needed';
+$string['backgroundfit:fit'] = 'Fit the doors to the image';
+$string['backgroundfit_help'] = 'Fill the calendar scales the image to cover whatever shape the doors make, cropping whatever does not fit. That suits a backdrop or a texture.
+
+Fit the doors to the image does the opposite: the calendar takes the image\'s own proportions and the doors stretch to tile it exactly. Combined with no gap between doors and transparent doors, that gives the traditional advent calendar look, where each door is a piece of one picture. Choose a number of columns that divides your doors neatly, so 6 columns for 24 doors.';
 $string['backtocalendar'] = 'Back to the calendar';
 $string['bgcolour'] = 'Background colour';
+$string['bgopacity'] = 'Background image strength';
+$string['bgopacity:full'] = 'Full strength';
+$string['bgopacity_help'] = 'Fades the background image so the doors stand out against it. The doors themselves are not faded.
+
+The picture is drawn on its own layer, so custom CSS can go further: blur, desaturate or tint ".doors-bg" and only the picture is affected.';
 $string['bulkapplied'] = 'Release dates applied';
 $string['bulkapply'] = 'Apply dates';
 $string['bulkclear'] = 'Remove all dates';
@@ -54,6 +65,10 @@ $string['buttonstyle:theme'] = 'Site colour';
 $string['buttonstyle_help'] = 'The buttons behind a door, for a link or a linked activity, normally take the site\'s primary colour like every other button in Moodle.
 
 Match the calendar instead and they take this calendar\'s door colour, so a campaign branded calendar is branded all the way through. The text and the activity icon switch between white and near black to stay readable against whatever colour you choose. Where the calendar has no door colour of its own the buttons fall back to the site colour.';
+$string['centredoors'] = 'Centre the last row';
+$string['centredoors_help'] = 'A grid packs the doors from the left, so a last row that does not fill the width sits to one side. Turn this on to centre it instead, which looks tidier for a five door week in a three column grid.
+
+It has no effect when the doors are fitted to a background image, since they tile the picture exactly and there is nothing left over.';
 $string['cleardoor'] = 'Empty this door';
 $string['cleardoorconfirm'] = 'Delete all the content behind door {$a}?';
 $string['colourfield'] = 'Colour';
@@ -69,12 +84,16 @@ $string['completionopenedgroup_help'] = 'Mark the activity complete once the par
 $string['contentsummary'] = 'Contains';
 $string['cssref:activityicon'] = 'The activity icon on that button, flattened to white by default';
 $string['cssref:activitylink'] = 'The button linking to another activity';
+$string['cssref:activitytext'] = 'The activity name and, where it is elsewhere, its course, on the button';
 $string['cssref:back'] = 'The opened face';
 $string['cssref:backdrop'] = 'The dark overlay behind the panel';
+$string['cssref:bg'] = 'The background picture on its own layer, so fading or blurring it leaves the doors alone';
 $string['cssref:bgimg'] = 'The image on a door face';
+$string['cssref:bgopacity'] = 'How strongly the background picture is drawn, from 0 to 1';
 $string['cssref:btn'] = 'Either button when it is set to match the calendar rather than the site';
-$string['cssref:canvas'] = 'The area holding the doors, where the background image sits';
+$string['cssref:canvas'] = 'The area holding the doors';
 $string['cssref:caption'] = 'The text block on a door';
+$string['cssref:centre'] = 'On the wrapper when a part filled last row is centred';
 $string['cssref:cols'] = 'Number of grid columns';
 $string['cssref:content'] = 'Content inside a door';
 $string['cssref:dimmed'] = 'Door artwork reused on the opened face';
@@ -89,6 +108,7 @@ $string['cssref:doortitle'] = 'The title under the number';
 $string['cssref:embed'] = 'Embedded media or a framed page';
 $string['cssref:emptydoor'] = 'The placeholder when a door has no content';
 $string['cssref:face'] = 'Either face of a door';
+$string['cssref:facestacked'] = 'On the wrapper when door text sits under the image rather than over it';
 $string['cssref:flash'] = 'The message shown when a locked door is selected';
 $string['cssref:front'] = 'The closed face';
 $string['cssref:frontbg'] = 'Closed door background, varied colours only';
@@ -119,6 +139,7 @@ $string['cssref:properties'] = 'Colours and spacing';
 $string['cssref:richtext'] = 'The rich text';
 $string['cssref:structure'] = 'The calendar';
 $string['cssref:tick'] = 'The tick on an opened door in dim mode';
+$string['cssref:transparent'] = 'On the wrapper when the doors are drawn as transparent outlines';
 $string['cssref:wrapper'] = 'The whole activity. Also carries the layout, shape, aspect and opened style as classes';
 $string['cssrefinsert'] = 'Add this to the custom CSS box';
 $string['cssrefintro'] = 'Select any selector below to add it to the box above, already prefixed with this activity\'s wrapper id so it affects nothing else on the page.';
@@ -155,6 +176,8 @@ $string['doorcontent_help'] = 'Text, images and embedded media shown inside the 
 
 A door is laid out in this order: the uploaded file and this text, in whichever order you choose below, then the activity link, then the web link or embed.';
 $string['doordeleted'] = 'Door {$a} deleted';
+$string['doorgap'] = 'Space between doors';
+$string['doorgap_help'] = 'The gap between the doors in the grid. Set it to 0 and the doors tile edge to edge, which is what you want when the doors are cut out of a single picture.';
 $string['doorimage'] = 'Door face image';
 $string['doorimage_help'] = 'An image just for this door, overriding the default closed door image.';
 $string['doorlabel'] = 'Face label';
@@ -206,6 +229,14 @@ $string['errornumdoors'] = 'The number of doors must be between 1 and {$a}.';
 $string['errorpalette'] = 'No usable colours were found. Use hex values such as #81ecec, separated by commas.';
 $string['errorsaving'] = 'Could not save. Please try again.';
 $string['eventdooropened'] = 'Door opened';
+$string['facelayout'] = 'Door face layout';
+$string['facelayout:overlay'] = 'Text over the image';
+$string['facelayout:stacked'] = 'Text under the image';
+$string['facelayout_help'] = 'Where a door has its own face image, this decides how the image and the number or title share the door.
+
+Text over the image fills the door with the picture and lays the text on top, on a shaded backing so it stays readable. It suits photographs and full bleed artwork.
+
+Text under the image shows the whole image, scaled to fit, with the number and title underneath. It suits icons, logos and line art, where covering the middle with text spoils the picture.';
 $string['gridcols'] = 'Columns';
 $string['hasactivity'] = 'activity link';
 $string['hasdoorimage'] = 'door image';
@@ -231,7 +262,9 @@ $string['markopened'] = 'Show doors as opened';
 $string['maxwidth'] = 'Maximum width';
 $string['maxwidth_help'] = 'The widest the calendar will be drawn, in pixels, centred in the page. Leave it at 0 and the calendar uses the full width of the page, which suits a grid because the doors simply get roomier.
 
-It is worth setting for the free layout, where the canvas grows with the page and a background image made for a laptop is stretched well past its natural size on a large monitor. Set it to the width the image was made for. 830 matches the width Moodle uses for reading pages.';
+It is worth setting for the free layout, where the canvas grows with the page and a background image made for a laptop is stretched well past its natural size on a large monitor. Set it to the width the image was made for. 830 matches the width Moodle uses for reading pages.
+
+The description above the calendar is brought in to the same width, so the two line up.';
 $string['mediaposition'] = 'Where to put the file';
 $string['mediaposition:above'] = 'Above the text';
 $string['mediaposition:below'] = 'Below the text';
@@ -339,3 +372,7 @@ $string['shownumbers'] = 'Show door numbers';
 $string['showprogress'] = 'Show progress bar';
 $string['showtitles'] = 'Show door titles on the front';
 $string['showtitles_help'] = 'Display each door\'s title on the closed door as well as inside it. Useful when the doors are topics rather than a surprise.';
+$string['transparentdoors'] = 'Transparent doors';
+$string['transparentdoors_help'] = 'Draws the doors as dashed outlines with the background image showing through, the way a paper advent calendar looks before it is opened. An opened door darkens instead of turning a colour.
+
+The door and palette colours are ignored while this is on, though a door with its own face image still shows it.';

@@ -261,6 +261,12 @@ final class locallib_test extends \advanced_testcase {
         // Fixed mode gets no map at all.
         $instance->colourmode = 'fixed';
         $this->assertSame([], doors_build_colour_map($instance, $doorrecords));
+
+        // Transparent doors paint nothing behind the text, so varied colours
+        // are skipped too.
+        $instance->colourmode = 'varied';
+        $instance->transparentdoors = 1;
+        $this->assertSame([], doors_build_colour_map($instance, $doorrecords));
     }
 
     /**

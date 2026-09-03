@@ -119,12 +119,41 @@ class mod_doors_mod_form extends moodleform_mod {
         $mform->setDefault('maxwidth', !empty($config->maxwidth) ? $config->maxwidth : 0);
         $mform->addHelpButton('maxwidth', 'maxwidth', 'mod_doors');
 
+        $mform->addElement('advcheckbox', 'centredoors', get_string('centredoors', 'mod_doors'));
+        $mform->addHelpButton('centredoors', 'centredoors', 'mod_doors');
+        $mform->hideIf('centredoors', 'layout', 'neq', 'grid');
+
         $mform->addElement('select', 'aspect', get_string('aspect', 'mod_doors'), doors_aspect_options());
         $mform->setDefault('aspect', 'square');
         $mform->hideIf('aspect', 'layout', 'neq', 'grid');
 
         $mform->addElement('select', 'doorshape', get_string('doorshape', 'mod_doors'), doors_shape_options());
         $mform->setDefault('doorshape', !empty($config->doorshape) ? $config->doorshape : 'rounded');
+
+        $mform->addElement('select', 'facelayout', get_string('facelayout', 'mod_doors'), [
+            'overlay' => get_string('facelayout:overlay', 'mod_doors'),
+            'stacked' => get_string('facelayout:stacked', 'mod_doors'),
+        ]);
+        $mform->setDefault('facelayout', 'overlay');
+        $mform->addHelpButton('facelayout', 'facelayout', 'mod_doors');
+
+        $mform->addElement('advcheckbox', 'transparentdoors', get_string('transparentdoors', 'mod_doors'));
+        $mform->addHelpButton('transparentdoors', 'transparentdoors', 'mod_doors');
+
+        $gaps = [];
+        foreach ([0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 32] as $gap) {
+            $gaps[$gap] = $gap . 'px';
+        }
+        $mform->addElement('select', 'doorgap', get_string('doorgap', 'mod_doors'), $gaps);
+        $mform->setDefault('doorgap', 10);
+        $mform->addHelpButton('doorgap', 'doorgap', 'mod_doors');
+
+        $mform->addElement('select', 'backgroundfit', get_string('backgroundfit', 'mod_doors'), [
+            'cover' => get_string('backgroundfit:cover', 'mod_doors'),
+            'fit' => get_string('backgroundfit:fit', 'mod_doors'),
+        ]);
+        $mform->setDefault('backgroundfit', 'cover');
+        $mform->addHelpButton('backgroundfit', 'backgroundfit', 'mod_doors');
 
         $imageoptions = [
             'subdirs' => 0,
@@ -134,6 +163,14 @@ class mod_doors_mod_form extends moodleform_mod {
 
         $mform->addElement('filemanager', 'background', get_string('background', 'mod_doors'), null, $imageoptions);
         $mform->addHelpButton('background', 'background', 'mod_doors');
+
+        $opacities = [100 => get_string('bgopacity:full', 'mod_doors')];
+        foreach ([90, 80, 70, 60, 50, 40, 30, 20, 10] as $percent) {
+            $opacities[$percent] = $percent . '%';
+        }
+        $mform->addElement('select', 'bgopacity', get_string('bgopacity', 'mod_doors'), $opacities);
+        $mform->setDefault('bgopacity', 100);
+        $mform->addHelpButton('bgopacity', 'bgopacity', 'mod_doors');
 
         $mform->addElement('filemanager', 'doorclosed', get_string('doorclosed', 'mod_doors'), null, $imageoptions);
         $mform->addHelpButton('doorclosed', 'doorclosed', 'mod_doors');
